@@ -1,0 +1,27 @@
+<?php
+// Simple FailSafe! :D
+if (!board_title($id)) { $id = false; }
+
+if ($id) {
+?>
+<h1><?php echo board_title($id); ?></h1>
+<div class="menu"><a href="./?p=home">Home</a> <b>></b> Board:<?php echo board_title($id); ?></div>
+<table class="boards">
+	<tr class="key">
+		<td class="board">Title</td>
+		<td>Started by</td>
+		<td>Last Post</td>
+	</tr>
+	<?php
+	$threads = thread_list($id);
+	foreach ($threads as $thd) {
+	?>
+	<tr>
+		<td class="board"><a href="./?p=thread&id=<?php echo $thd['id']; ?>"><?php echo $thd['name']; ?></a></td>
+		<td><?php echo get_username($thd['author']); ?></td>
+		<td>NULL. AND VOID! :/</td>
+	</tr>
+	<?php } ?>
+</table>
+<div id="newthread">New Thread</div>
+<?php } else { $this->load_theme(theme(),"404");} ?>

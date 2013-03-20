@@ -1,0 +1,26 @@
+<?php
+$id = strtolower($id);
+if (!is_logged_in()) { $id = false; }
+if ($id == "reply") {
+	// Reply Form.
+	$args = array();
+	$args['id'] = $HTTP_GET['thd'];
+	$this->load_theme(theme(),"thread",$args);
+	echo "<h3>Conbobulating a new '".capitalise($id)."' on ".thread_title($HTTP_GET['thd'])."</h3>";
+	reply_form($HTTP_GET['thd']);
+}
+else if ($id == "board") {
+	// Board Form
+	echo "<h1>Conbobulating a new '".capitalise($id)."'</h1>";
+}
+else if ($id == "thread") {
+	// Thread Form
+	echo "<h1>Conbobulating a new '".capitalise($id)."'</h1>";
+}
+else if (!$id) {
+	$this->load_theme(theme(),"404");
+}
+else {
+	$this->load_theme(theme(),"404");
+}
+?>

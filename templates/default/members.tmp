@@ -1,0 +1,11 @@
+<?php
+// This is how simple it could be.
+// ProTIP! There is no need for ID data in here so you could
+// utilise this in order to have multiple pages of members.
+
+$members = $this->db_get("NickCore","id");
+foreach ($members as $user) {
+	echo url("./?p=user&id={$user['id']}",get_username($user['id']))."<br/>";
+}
+echo "<b>There are ".count($members)." members!</b>";
+?>

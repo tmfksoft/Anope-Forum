@@ -1,0 +1,26 @@
+<?php
+// The theme can kill its self off before the forum truly loads or alter the theme.
+// The theme core is loaded after session start so you can still access sessions,
+// e.g. Custom theme's per user. :)
+
+// Beware! The theme core is loaded alongside the Forum core akak the forums core scope.
+// To pass vars to theme pages just append to $args aka $args['colour'] = "BLUE!"; to set $colour
+
+// You can utilise this core file to load custom features into the forum's core, pretty much like
+// a plugin system so the theme can come with custom features.
+
+// The Forum's core Class can be accessed as $core instead of $this e.g. $core->log("Hello!");
+
+function qr_code($page,$id = false) {
+	// Returns a QR Code URL.
+	// Good example of how the theme core can be utilised.
+	if (!$id) {
+		$url = $_SERVER['SCRIPT_URI']."?p={$page}";
+	}
+	else {
+		$url = $_SERVER['SCRIPT_URI']."?p={$page}&id={$id}";
+	}
+	$url = urlencode($url);
+	return "http://chart.apis.google.com/chart?cht=qr&chs=100x100&chl={$url}&chld=H|0";
+}
+?>

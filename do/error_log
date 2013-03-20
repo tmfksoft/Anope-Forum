@@ -1,0 +1,5 @@
+[19-Mar-2013 17:51:07 America/New_York] PHP Warning:  include(templates/default/default.core) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/tmfksoft/public_html/dev/anope/forum/inc/core.php on line 17
+[19-Mar-2013 17:51:07 America/New_York] PHP Warning:  include(templates/default/default.core) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/tmfksoft/public_html/dev/anope/forum/inc/core.php on line 17
+[19-Mar-2013 17:51:07 America/New_York] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'templates/default/default.core' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/tmfksoft/public_html/dev/anope/forum/inc/core.php on line 17
+[19-Mar-2013 17:55:48 America/New_York] PHP Fatal error:  Call to undefined function db_get() in /home/tmfksoft/public_html/dev/anope/forum/inc/core.php on line 77
+[19-Mar-2013 17:58:32 America/New_York] PHP Parse error:  syntax error, unexpected '~' in /home/tmfksoft/public_html/dev/anope/forum/do/login.php on line 2

@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title><?php forum_title(); ?> - <?php echo $page; ?></title>
+	</head>
+	<style>
+		body {
+			font-family:"Arial";
+		}
+		.content {
+			width:90%;
+			margin:0 auto;
+		}
+		.menu {
+			border:solid 1px silver;
+			padding-top:5px;
+			height:27px;
+			padding-left:5px;
+		}
+		.page {
+			padding:5px;
+			background:whiteSmoke;
+			border:solid 1px silver;
+			margin-top:10px;
+		}
+		.footer {
+			border:solid 1px silver;
+			text-align:center;
+			padding-top:5px;
+			height:27px;
+			margin-top:10px;
+		}
+		.boards {
+			width:100%;
+			border:solid 1px silver;
+			margin-top:10px;
+		}
+		.boards td {
+			border:solid 1px silver;
+		}
+		.key {
+			background:silver;
+		}
+		.threads, .messages {
+			width:128px;
+			text-align:center;
+		}
+		.board {
+			padding-left:3px;
+		}
+		#newthread {
+			float:right;
+			border:solid 1px silver;
+			background:grey;
+			margin-top:10px;
+			display:block;
+			color:whiteSmoke;
+			padding:3px;
+		}
+	</style>
+	<body>
+		<div class="content">
+			<h1><a href="./?p=home"><?php forum_title(); ?></a></h1>
+			<div class="menu"><a href="./?p=home">Home</a> | <?php echo url("./?p=members","Members"); ?> | <?php if (is_logged_in()) { echo url("./do/logout.php","Logout"); } else { echo url("./?p=login","Log in"); } ?><?php if (is_logged_in()) { echo " | Logged in as <a href=\"./?p=user&id=".user_id()."\">".get_username(); } ?></a></div>

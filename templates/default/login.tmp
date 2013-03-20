@@ -1,0 +1,20 @@
+<?php
+if (!is_logged_in()) {
+?>
+<h1>Log In</h1>
+<div class="page">
+	<?php
+	if ($id == "1") {
+		echo "<b>Fields CANNOT be left empty!</b>";
+	}
+	else if ($id == "2") {
+		echo "<b>Invalid Credentials!</b>";
+	}
+	login_form(); ?>
+</div>
+<?php } else { ?>
+	<h1>Error!</h1>
+<div class="page">
+	You're logged in!
+</div>
+<?php } ?>

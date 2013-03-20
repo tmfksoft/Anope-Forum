@@ -1,0 +1,36 @@
+<table class="boards">
+	<tr class="key">
+		<td class="board">Boards [+]</td>
+		<td class="threads">Threads</td>
+		<td class="messages">Messages</td>
+	</tr>
+	<?php
+	$boards = board_list();
+	foreach ($boards as $brd) {
+	
+		// Some code to retrieve message count!
+		$threads = thread_list($brd['id']);
+		$messages = 0;
+		foreach ($threads as $thd) {
+			$messages += count(message_list($thd['id']));
+		}
+	?>
+	<tr>
+		<td class="board"><a href="./?p=board&id=<?php echo $brd['id']; ?>"><?php echo board_title($brd['id']); ?></a> [Delete]</td>
+		<td class="threads"><?php echo count($threads); ?></td>
+		<td class="messages"><?php echo $messages; ?></td>
+	</tr>
+	<?php } ?>
+</table>
+
+<table class="boards">
+	<tr class="key">
+		<td class="board">Stats</td>
+		<td class="threads"></td>
+	</tr>
+	
+	<tr>
+		<td class="board">Boards</td>
+		<td class="messages"><?php echo count(board_list()); ?></td>
+	</tr>
+</table>

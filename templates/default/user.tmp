@@ -1,0 +1,19 @@
+<?php
+// Simple FailSafe! :D
+if (!get_username($id)) { $id = false; }
+
+if ($id) {
+?>
+<h1>Viewing <?php echo get_username($id); ?></h1>
+<div class="page">
+	<?php $udata = user_info($id); ?>
+	<b>Username:</b> <?php echo $udata['display']; ?>
+	<br/>
+	<b>Greet/Signature:</b> <?php echo $udata['greet']; ?>
+</div>
+<?php } else { ?>
+	<h1>Error!</h1>
+<div class="page">
+	We could not find the drone you were looking for!
+</div>
+<?php } ?>
