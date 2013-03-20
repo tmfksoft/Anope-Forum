@@ -1,140 +1,137 @@
-<?php
-/*
- * Anope Forum CORE File!
- * No need to edit anything here!
- * Theme's have their own variable scope so you CANNOT collide with core variables or edit them.
- * This Core can be some what included in your own site so you may use functions :)
- */
-$config = array();
-include("config.php");
-$forum = array();
-
-$forum['title'] = "Ilkotech Forum";
+<?php
+/*
+ * Anope Forum CORE File!
+ * No need to edit anything here!
+ * Theme's have their own variable scope so you CANNOT collide with core variables or edit them.
+ * This Core can be some what included in your own site so you may use functions :)
+ */
+$config = array();
+include("config.php");
+$forum = array();
+
+$forum['title'] = "Ilkotech Forum";
 session_start();
-
-// Include the theme core.
-$addr = "templates/".theme()."/".theme().".core";
-if (file_exists($addr)) {
-	include($addr);
-}
-
-class forum {
-	private function init_db() {
-		global $config;
-		$res = mysql_connect($config['mysql_host'],$config['mysql_user'],$config['mysql_pass']) or die(mysql_error());
-		mysql_select_db($config['mysql_data']);
-		return $res;
-	}
-	public function db_query($query) {
-		$res = $this->init_db();
+// Include the theme core.
+$addr = "templates/".theme()."/".theme().".core";
+if (file_exists($addr)) {
+	include($addr);
+}
+
+class forum {
+	private function init_db() {
+		global $config;
+		$res = mysql_connect($config['mysql_host'],$config['mysql_user'],$config['mysql_pass']) or die(mysql_error());
+		mysql_select_db($config['mysql_data']);
+		return $res;
+	}
+	public function db_query($query) {
+		$res = $this->init_db();
 		$return = mysql_query($query,$res) or die(mysql_error());
-
-		// Returns a single string for 1 result and an array for multiple.
-		$result = array();
-			while($row = mysql_fetch_assoc($return)) {
-			$result[] = $row;
-		}
-		if ($result < 0) {
-			return false;
-		}
-		else {
-			return $result;
-		}
-	}
-	public function db_get($table,$item,$where = "") {
-		global $config;
-		$prefix = $config['mysql_pref'];
-		return $this->db_query("SELECT {$item} FROM {$prefix}{$table} {$where}");
-	}
-	public function load_theme($name,$page,$args = false) {
-		if ($args) {
-			extract($args);
-		}
-		$page = strtolower($page);
-		$addr = "templates/{$name}/{$page}.tmp";
-		include($addr);
-	}
-	public function page_exists($name,$page) {
-		$page = strtolower($page);
-		$addr = "templates/{$name}/{$page}.tmp";
-		if (file_exists($addr)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	public function do_log($message) {
-		if (file_exists("error.forum.log")) {
-			$prev = file_get_contents("error.forum.log")."\n";
-		}
-		else { $prev = ""; }
-		$new = time().": ".$message;
-		file_put_contents("error.forum.log",$prev.$new);
-	}
-	public function check_login($username,$password) {
-		$username = htmlentities($username);
-		$password = md5($password);
-		$id = $this->db_get("NickCore","id","WHERE display='{$username}' AND pass='md5:{$password}'");
-		if ($id > 0) {
-			return $id[0]['id'];
-		}
-		else {
-			return false;
-		}
-	}
-}
+		// Returns a single string for 1 result and an array for multiple.
+		$result = array();
+			while($row = mysql_fetch_assoc($return)) {
+			$result[] = $row;
+		}
+		if ($result < 0) {
+			return false;
+		}
+		else {
+			return $result;
+		}
+	}
+	public function db_get($table,$item,$where = "") {
+		global $config;
+		$prefix = $config['mysql_pref'];
+		return $this->db_query("SELECT {$item} FROM {$prefix}{$table} {$where}");
+	}
+	public function load_theme($name,$page,$args = false) {
+		if ($args) {
+			extract($args);
+		}
+		$page = strtolower($page);
+		$addr = "templates/{$name}/{$page}.tmp";
+		include($addr);
+	}
+	public function page_exists($name,$page) {
+		$page = strtolower($page);
+		$addr = "templates/{$name}/{$page}.tmp";
+		if (file_exists($addr)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public function do_log($message) {
+		if (file_exists("error.forum.log")) {
+			$prev = file_get_contents("error.forum.log")."\n";
+		}
+		else { $prev = ""; }
+		$new = time().": ".$message;
+		file_put_contents("error.forum.log",$prev.$new);
+	}
+	public function check_login($username,$password) {
+		$username = htmlentities($username);
+		$password = md5($password);
+		$id = $this->db_get("NickCore","id","WHERE display='{$username}' AND pass='md5:{$password}'");
+		if ($id > 0) {
+			return $id[0]['id'];
+		}
+		else {
+			return false;
+		}
+	}
+}
 $core = new forum;
-
-// Functions for templates.
-function message_list($thread) {
-	global $core;
-	$ret = $core->db_get("ForumMessages","*","WHERE thread='{$thread}'");
-	return $ret;
-}
-function thread_list($board) {
-	global $core;
-	$ret = $core->db_get("ForumThreads","*","WHERE board='{$board}'");
-	return $ret;
-}
-function board_list() {
-	global $core;
-	$ret = $core->db_get("ForumBoards","id");
-	return $ret;
-}
-// BOARD STUFF
-function board_title($board) {
-	global $core;
-	$ret = $core->db_get("ForumBoards","name","WHERE id='{$board}'");
-	return $ret[0]['name'];
-}
-function thread_title($thread) {
-	global $core;
-	$ret = $core->db_get("ForumThreads","name","WHERE id='{$thread}'");
-	return $ret[0]['name'];
-}
-function thread_info($thread) {
-	global $core;
-	$ret = $core->db_get("ForumThreads","*","WHERE id='{$thread}'");
-	return $ret[0];
-}
-function user_info($uid) {
-	global $core;
-	$ret = $core->db_get("NickCore","*","WHERE id='{$uid}'");
-	return $ret[0];
-}
-function forum_title() {
-	global $config;
-	echo $config['forum_title'];
-}
-function theme() {
-	global $config;
-	return $config['forum_theme'];
-}
-function is_logged_in() {
-	if (isset($_SESSION['anope_id'])) {
-		return true;
-	}
-	else {
+// Functions for templates.
+function message_list($thread) {
+	global $core;
+	$ret = $core->db_get("ForumMessages","*","WHERE thread='{$thread}'");
+	return $ret;
+}
+function thread_list($board) {
+	global $core;
+	$ret = $core->db_get("ForumThreads","*","WHERE board='{$board}'");
+	return $ret;
+}
+function board_list() {
+	global $core;
+	$ret = $core->db_get("ForumBoards","id");
+	return $ret;
+}
+// BOARD STUFF
+function board_title($board) {
+	global $core;
+	$ret = $core->db_get("ForumBoards","name","WHERE id='{$board}'");
+	return $ret[0]['name'];
+}
+function thread_title($thread) {
+	global $core;
+	$ret = $core->db_get("ForumThreads","name","WHERE id='{$thread}'");
+	return $ret[0]['name'];
+}
+function thread_info($thread) {
+	global $core;
+	$ret = $core->db_get("ForumThreads","*","WHERE id='{$thread}'");
+	return $ret[0];
+}
+function user_info($uid) {
+	global $core;
+	$ret = $core->db_get("NickCore","*","WHERE id='{$uid}'");
+	return $ret[0];
+}
+function forum_title() {
+	global $config;
+	echo $config['forum_title'];
+}
+function theme() {
+	global $config;
+	return $config['forum_theme'];
+}
+function is_logged_in() {
+	if (isset($_SESSION['anope_id'])) {
+		return true;
+	}
+	else {
 		return false;
 	}
 }
