@@ -1,3 +1,3 @@
 <div class="footer">
-	Anope Forum Software by Thomas Edwards - Copyright 2013 &copy; Thomas Edwards
+	Anope Forum Software v<?php echo $ver[0].".".$ver[1]; ?> by Thomas Edwards - Copyright 2013 &copy; Thomas Edwards
 </div>

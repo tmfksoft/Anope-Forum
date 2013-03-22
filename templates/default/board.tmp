@@ -3,14 +3,19 @@
 if (!board_title($id)) { $id = false; }
 
 if ($id) {
+$board_info = board_info($id);
+$board_author = $board_info['owner'];
 ?>
 <h1><?php echo board_title($id); ?></h1>
 <div class="menu"><a href="./?p=home">Home</a> <b>></b> Board:<?php echo board_title($id); ?></div>
+<?php
+	echo "<br/><div class=\"menu\">This board is owned by <a href=\"./?p=user&id={$board_author}\">".get_username($board_author)."</a></div>";
+?>
 <table class="boards">
 	<tr class="key">
 		<td class="board">Title</td>
 		<td>Started by</td>
-		<td>Last Post</td>
+		<td>Last Message</td>
 	</tr>
 	<?php
 	$threads = thread_list($id);
@@ -18,10 +23,16 @@ if ($id) {
 	?>
 	<tr>
 		<td class="board"><a href="./?p=thread&id=<?php echo $thd['id']; ?>"><?php echo $thd['name']; ?></a></td>
-		<td><?php echo get_username($thd['author']); ?></td>
-		<td>NULL. AND VOID! :/</td>
+		<td><?php echo url("./?p=user&id=".$thd['author'],get_username($thd['author'])); ?></td>
+		<td><?php
+		$messages = message_list($thd['id']);
+		$lst = count($messages)-1;
+		$last_id = $lst+1;
+		$last = $messages[$lst];
+		echo "<a href=\"./?p=thread&id={$thd['id']}#msg-{$last_id}\">".htmlentities($last['message'])."</a> - ".get_username($last['author']);
+		?></td>
 	</tr>
 	<?php } ?>
 </table>
-<div id="newthread">New Thread</div>
+<?php if (is_logged_in()) { ?><div id="newthread"><a href="./?p=new&id=thread&brd=<?php echo $id; ?>">New Thread</a></div><?php } ?>
 <?php } else { $this->load_theme(theme(),"404");} ?>

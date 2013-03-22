@@ -5,11 +5,21 @@ if (!get_username($id)) { $id = false; }
 if ($id) {
 ?>
 <h1>Viewing <?php echo get_username($id); ?></h1>
+<?php if (is_oper(user_id())) {
+	?><a href="./?p=suspend&id=<?php echo $id; ?>">Suspend User</a><?php
+}
+?>
 <div class="page">
 	<?php $udata = user_info($id); ?>
 	<b>Username:</b> <?php echo $udata['display']; ?>
 	<br/>
-	<b>Greet/Signature:</b> <?php echo $udata['greet']; ?>
+	<b>Greet/Signature:</b> <?php if ($udata['greet'] != "") { echo htmlentities($udata['greet']); } else { echo "<i>None</i>"; } ?>
+	<?php
+		if ($id == user_id() || is_oper(user_id())) {
+			echo "<br/><b>E-Mail:</b> ".$udata['email'];
+		}
+	?>
+	<?php if(is_suspended($udata['id'])) { echo "<br/><h3>User is Suspended.</h3>"; } ?>
 </div>
 <?php } else { ?>
 	<h1>Error!</h1>

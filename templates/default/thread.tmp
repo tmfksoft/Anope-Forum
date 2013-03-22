@@ -11,19 +11,26 @@ $board_id = $thread_info['board'];
 $board_title = board_title($board_id);
 ?>
 <div class="menu"><a href="./?p=home">Home</a> <b>></b> Board:<a href="./?p=board&id=<?php echo $board_id; ?>"><?php echo $board_title; ?></a> <b>></b> Thread:<?php echo thread_title($id); ?></div>
-<?php if (is_logged_in()) { ?><div id="newthread">Reply</div><?php } ?>
+<?php if (is_logged_in()) { ?><div id="newthread"><a href="./?p=new&id=reply&thd=<?php echo $id; ?>#reply">Reply</a></div><?php } else { echo "<i><a href=\"./?p=login\">Log in</a> to reply</i>"; } ?>
+<?php if (is_logged_in() && $thread_info['author'] == user_id()) { ?><div id="newthread"><a href="./?p=delete&id=<?php echo $id; ?>&type=t">Delete Thread</a></div><?php } ?>
 <?php
 	$messages = message_list($id);
 	foreach ($messages as $msg) {
 		$udata = user_info($msg['author']);
 	?>
-<table class="boards" style="min-height:128px;">
+<table id="msg-<?php echo $msg['id']; ?>" class="boards" style="min-height:128px;">
+	<tr>
+		<td>
+			<a href="./?p=thread&id=<?php echo $id; ?>#msg-<?php echo $msg['id']; ?>">#<?php echo $msg['id']; ?></a>
+		</td>
+	</tr>
 	<tr style="vertical-align:text-top;">
-		<td class="threads"><?php echo $udata['display']; ?><br/><a href="./?p=user&id=<?php echo $udata['id']; ?>"><img src="<?php echo qr_code("user",$udata['id']); ?>"/></a></td>
-		<td><?php echo $msg['message']; ?><?php if ($udata['greet'] != "") { echo "<hr></hr>".$udata['greet']; } ?></td>
+		<td class="threads"><b><?php echo $udata['display']; ?></b><br/><?php if (is_oper($udata['id'])) { echo is_oper($udata['id'])."<br/>"; } ?><a href="./?p=user&id=<?php echo $udata['id']; ?>"><img src="<?php echo qr_code("user",$udata['id']); ?>"/></a></td>
+		<td><?php echo $bbcode->parse(htmlentities($msg['message'])); ?><?php if ($udata['greet'] != "") { echo "<hr></hr>".htmlentities($udata['greet']); } ?></td>
 		<td class="threads"><?php echo date('l jS \of F Y h:i:s A',$msg['ts']); ?></td>
 	</tr>
 </table>
-<?php } ?>
-<?php if (is_logged_in()) { ?><div id="newthread"><a href="./?p=new&id=reply&thd=<?php echo $id; ?>#reply">Reply</a></div><?php } else { echo "<i><a href=\"./?p=login\">Log in</a> to reply</i>"; } ?>
+<?php }
+reply_form($id);
+?>
 <?php } else { $this->load_theme(theme(),"404");} ?>

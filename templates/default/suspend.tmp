@@ -1,0 +1,8 @@
+<?php
+	if (suspend_user($id)) {
+		echo "User suspended!";
+	}
+	else {
+		echo "Error!";
+	}
+?>

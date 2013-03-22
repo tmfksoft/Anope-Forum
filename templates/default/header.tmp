@@ -1,6 +1,26 @@
+<?php
+$suspended = is_suspended(user_id());
+if ($suspended) {
+	// Log them out!
+	unset($_SESSION['anope_id']);
+}
+// Some code to generate a title.
+if ($cpage == "thread") {
+	$title = "Viewing: '".thread_title($id)."'";
+}
+else if ($cpage == "board") {
+	$title = "Viewing: ".board_title($id)."'";
+}
+else if ($cpage == "user") {
+	$title = "Viewing: ".get_username($id);
+}
+else {
+	$title = $cpage;
+}
+?>
 <html>
 	<head>
-		<title><?php forum_title(); ?> - <?php echo $page; ?></title>
+		<title><?php forum_title(); ?> - <?php echo capitalise($title); ?></title>
 	</head>
 	<style>
 		body {
@@ -61,3 +81,4 @@
 		<div class="content">
 			<h1><a href="./?p=home"><?php forum_title(); ?></a></h1>
 			<div class="menu"><a href="./?p=home">Home</a> | <?php echo url("./?p=members","Members"); ?> | <?php if (is_logged_in()) { echo url("./do/logout.php","Logout"); } else { echo url("./?p=login","Log in"); } ?><?php if (is_logged_in()) { echo " | Logged in as <a href=\"./?p=user&id=".user_id()."\">".get_username(); } ?></a></div>
+			<?php if ($suspended) { echo "<h3>Your account is suspended! Contact an Administrator about your account if needed!</h3>"; } ?>

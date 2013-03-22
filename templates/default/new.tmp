@@ -15,7 +15,8 @@ else if ($id == "board") {
 }
 else if ($id == "thread") {
 	// Thread Form
-	echo "<h1>Conbobulating a new '".capitalise($id)."'</h1>";
+	echo "<h1>Conbobulating a new '".capitalise($id)."' on ".board_title($HTTP_GET['brd'])."</h1>";
+	thread_form($HTTP_GET['brd']);
 }
 else if (!$id) {
 	$this->load_theme(theme(),"404");
