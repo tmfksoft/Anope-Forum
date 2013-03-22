@@ -10,7 +10,7 @@ $config = array();
 include("config.php");
 $forum = array();
 
-$forum['title'] = "Ilkotech Forum";
+$forum['title'] = "My Forum";
 session_start();
 
 // Extar Libs
